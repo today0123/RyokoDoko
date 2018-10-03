@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navSchedule"
+            android:icon="@drawable/baseline_date_range_black_18dp"
+            android:title="@string/my_schedule" />
+        <item
+            android:id="@+id/navCheckList"
+            android:icon="@drawable/baseline_event_available_black_18dp"
+            android:title="@string/travel_checklist" />
+        <item
+            android:id="@+id/navSharing"
+            android:icon="@drawable/baseline_share_black_18dp"
+            android:title="@string/schedule_share" />
+    </group>
+
+    <item android:title="@string/app_name">
+        <menu>
+            <item
+                android:id="@+id/navBackUp"
+                android:icon="@drawable/baseline_storage_black_18dp"
+                android:title="@string/data_backup" />
+            <item
+                android:id="@+id/navReview"
+                android:icon="@drawable/baseline_rate_review_black_18dp"
+                android:title="@string/app_evaluation" />
+            <item
+                android:id="@+id/navSetting"
+                android:icon="@drawable/baseline_settings_black_18dp"
+                android:title="@string/setting" />
+        </menu>
+    </item>
+</menu>
+

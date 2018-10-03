@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#02b3a7</color>
+    <color name="colorPrimaryDark">#038887</color>
+    <color name="colorAccent">#ec407a</color>
+    <color name="datePickerHeaderBackgroundColor">#038887</color>
+    <color name="colorLightGray">#eeeeee</color>
+    <color name="headerStyle">#ffffff</color>
+</resources>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rLCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:background="#ffffff"
+            android:elevation="2dp"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp">
+
+            <TextView
+                android:id="@+id/tVCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/choose_city"
+                android:textColor="#039693" />
+
+            <RadioGroup
+                android:id="@+id/rGCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/tVCity"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="24dp"
+                android:onClick="cityIsChecked">
+
+                <RadioButton
+                    android:id="@+id/rBHokkaido"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="cityIsChecked"
+                    android:text="@string/hokkaido_area" />
+
+                <RadioButton
+                    android:id="@+id/rBkantou"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="cityIsChecked"
+                    android:text="@string/kantou_area" />
+
+                <RadioButton
+                    android:id="@+id/rBKansai"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="cityIsChecked"
+                    android:text="@string/kansai_area" />
+
+                <RadioButton
+                    android:id="@+id/rBKyushu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="cityIsChecked"
+                    android:text="@string/kyushu_area" />
+            </RadioGroup>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rLDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:background="#ffffff"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp">
+
+            <TextView
+                android:id="@+id/tVDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="24dp"
+                android:layout_marginStart="16dp"
+                android:paddingTop="4dp"
+                android:text="@string/choose_start_end_date"
+                android:textColor="#039693" />
+
+            <TextView
+                android:id="@+id/tVStartDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/tVDate"
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="16dp"
+                android:text="@string/start_date"
+                android:textColor="#424242"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVEndDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@id/tVStartDate"
+                android:layout_marginBottom="12dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/end_date"
+                android:textColor="#424242"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnStartDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tVStartDate"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:background="#ffffff"
+                android:onClick="btnDateOnClick"
+                android:paddingHorizontal="38dp"
+                android:text="@string/choose_date"
+                android:textColor="#8b8b8b" />
+
+
+            <Button
+                android:id="@+id/btnEndDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@id/btnStartDate"
+                android:layout_below="@id/tVEndDate"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="#ffffff"
+                android:onClick="btnDateOnClick"
+                android:paddingHorizontal="38dp"
+                android:text="@string/choose_date"
+                android:textColor="#8b8b8b" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="1dp"
+            android:background="#ffffff"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/when_the_date_selection_is_complete"
+                android:textColor="#039693" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
