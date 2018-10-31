@@ -138,5 +138,7 @@ public class ScheduleActivity extends AppCompatActivity {
         // 부모 레이아웃에 작성한 레이아웃 추가
         lLDynamicDaysArea.addView(lLPoint);
     }
+
+
 }
 
