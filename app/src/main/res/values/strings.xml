@@ -44,4 +44,7 @@
     <string name="insert">일정 추가</string>
     <string name="if_you_selected_point">출발지와 도착지 설정 후 확인 버튼을 누르세요.</string>
     <string name="title_activity_choose_point_in_map">ChoosePointInMapActivity</string>
+
+    <string name="checklist">체크리스트</string>
+    <string name="checklist_guide">여행 전 준비해야 할 것들을 미리 기록하세요!</string>
 </resources>
