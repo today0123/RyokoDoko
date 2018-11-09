@@ -10,11 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:text="@string/checklist"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     <RelativeLayout
-        android:id="@+id/lLChecklist"
+        android:id="@+id/rLChecklist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible">
