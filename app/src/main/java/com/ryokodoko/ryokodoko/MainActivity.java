@@ -254,7 +254,8 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.navSchedule) {
 
         } else if (id == R.id.navCheckList) {
-
+            Intent intent = new Intent(getApplicationContext(), ChecklistActivity.class);
+            startActivity(intent);
         } else if (id == R.id.navSharing) {
 
         } else if (id == R.id.navBackUp) {

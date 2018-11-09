@@ -34,6 +34,7 @@
             android:name=".ChoosePointInMapActivity"
             android:label="@string/title_activity_choose_point_in_map"
             android:theme="@style/AppTheme"></activity>
+        <activity android:name=".ChecklistActivity"/>
     </application>
 
 </manifest>

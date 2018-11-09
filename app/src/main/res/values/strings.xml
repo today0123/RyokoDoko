@@ -46,5 +46,5 @@
     <string name="title_activity_choose_point_in_map">ChoosePointInMapActivity</string>
 
     <string name="checklist">체크리스트</string>
-    <string name="checklist_guide">여행 전 준비해야 할 것들을 미리 기록하세요!</string>
+    <string name="checklist_guide">여행 전에 꼭 준비해야 할 것들을 미리 메모하세요!</string>
 </resources>
