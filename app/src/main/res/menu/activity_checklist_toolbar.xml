@@ -7,9 +7,4 @@
         android:title="@string/delete"
         app:showAsAction="always"/>
 
-    <item
-        android:id="@+id/action_save_checklist"
-        android:icon="@drawable/baseline_done_white_18dp"
-        android:title="@string/save"
-        app:showAsAction="always"/>
 </menu>
