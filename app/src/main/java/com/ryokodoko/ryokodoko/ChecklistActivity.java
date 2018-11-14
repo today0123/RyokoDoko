@@ -12,9 +12,12 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,32 +26,50 @@ import android.widget.Toolbar;
 
 import com.google.android.gms.common.images.ImageRequest;
 
+import java.util.ArrayList;
+
 public class ChecklistActivity extends AppCompatActivity {
 
     android.support.v7.widget.Toolbar toolbarChecklist;
-    RelativeLayout rLChecklist;
-    CoordinatorLayout cLChecklist;
+    RelativeLayout rLChecklist, rLChecklistNothingTodo;
     ImageView iVNothingTodo;
     TextView tVNotingTodo;
     FloatingActionButton fabChecklist;
+    ChecklistDBHelper checklistDBHelper;
+    ArrayAdapter<String> mAdapter;
+    ListView lVChecklist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checklist);
         Intent intent = getIntent();
-
+        checklistDBHelper = new ChecklistDBHelper(this);
+        rLChecklistNothingTodo = (RelativeLayout) findViewById(R.id.rLChecklistNothingTodo);
         toolbarChecklist = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbarChecklist);
         rLChecklist = (RelativeLayout) findViewById(R.id.rLChecklist);
-        cLChecklist = (CoordinatorLayout) findViewById(R.id.cLchecklist);
         iVNothingTodo = (ImageView) findViewById(R.id.iVNothingTodo);
         tVNotingTodo = (TextView) findViewById(R.id.tVNothingTodo);
-        fabChecklist = (FloatingActionButton) findViewById(R.id.fabChecklist);
+        lVChecklist = (ListView) findViewById(R.id.lVCheckList);
+
+        loadChecklist();
 
         toolbarChecklist.setTitle(getResources().getString(R.string.checklist));
         toolbarChecklist.setTitleTextColor(getResources().getColor(R.color.headerStyle));
         setSupportActionBar(toolbarChecklist);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void loadChecklist() {
+        ArrayList<String> checklist = checklistDBHelper.getTaskList();
+        if (mAdapter == null) {
+            mAdapter = new ArrayAdapter<String>(this, R.layout.row_checklist, R.id.tVChecklistTitle, checklist);
+            lVChecklist.setAdapter(mAdapter);
+        } else {
+            mAdapter.clear();
+            mAdapter.addAll(checklist);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -59,31 +80,34 @@ public class ChecklistActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.action_delete_checklist:
-                //삭제 알림창 속성 설정
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(getResources().getString(R.string.notice_delete_all)).setCancelable(false)
-                        .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+        switch (item.getItemId()) {
+            case R.id.action_add_checklist:
+                final EditText checklistEditText = new EditText(this);
+                AlertDialog dialogAddChecklist = new AlertDialog.Builder(this)
+                        .setTitle(getResources().getString(R.string.add_checklist_notice))
+                        .setView(checklistEditText)
+                        .setPositiveButton(getResources().getString(R.string.add), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                                String checklist = String.valueOf(checklistEditText.getText());
+                                checklistDBHelper.insertNewTask(checklist);
+                                loadChecklist();
+                                rLChecklistNothingTodo.setVisibility(View.GONE);
                             }
-                        }).setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "Ok", Toast.LENGTH_LONG).show();
-                    }
-                });
-
-                AlertDialog dialog = builder.create();
-                //알림창 객체 생성
-                dialog.show();
-                //알림창 띄우기
-
-                break;
+                        })
+                        .setNegativeButton(getResources().getString(R.string.cancel), null)
+                        .create();
+                dialogAddChecklist.show();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void deleteChecklist(View view) {
+        View parent = (View) view.getParent();
+        TextView tVChecklistTitle = (TextView) parent.findViewById(R.id.tVChecklistTitle);
+        String checklist = String.valueOf(tVChecklistTitle.getText());
+        checklistDBHelper.deleteTask(checklist);
+        loadChecklist();
     }
 }

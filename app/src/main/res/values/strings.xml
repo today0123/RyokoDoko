@@ -52,4 +52,6 @@
     <string name="notice_delete_all">체크리스트를 전부 삭제하시겠습니까?</string>
     <string name="ok">확인</string>
     <string name="cancel">취소</string>
+    <string name="add">추가</string>
+    <string name="add_checklist_notice">필요한 메모를 추가하세요!</string>
 </resources>
