@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -84,7 +85,7 @@ public class ChecklistActivity extends AppCompatActivity {
             case R.id.action_add_checklist:
                 final EditText checklistEditText = new EditText(this);
                 AlertDialog dialogAddChecklist = new AlertDialog.Builder(this)
-                        .setTitle(getResources().getString(R.string.add_checklist_notice))
+                        .setMessage(getResources().getString(R.string.add_checklist_notice))
                         .setView(checklistEditText)
                         .setPositiveButton(getResources().getString(R.string.add), new DialogInterface.OnClickListener() {
                             @Override
