@@ -39,7 +39,7 @@ public class SelectDays extends AppCompatActivity {
 
         final LinearLayout lLDays = (LinearLayout) findViewById(R.id.lLBtnDays);
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.bottomMargin = 12;
 
 
