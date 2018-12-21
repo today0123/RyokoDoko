@@ -15,6 +15,7 @@ public class ChoosePointInMapActivity extends AppCompatActivity {
     LinearLayout lLMapfragment;
     int iTemp;
     String strCityTemp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +23,7 @@ public class ChoosePointInMapActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        iTemp = intent.getIntExtra("CITY_KEY",0);
+        iTemp = intent.getIntExtra("CITY_KEY", 0);
         strCityTemp = intent.getStringExtra("CITY_NAME_KEY");
 
 
@@ -32,24 +33,24 @@ public class ChoosePointInMapActivity extends AppCompatActivity {
         setSupportActionBar(toolbarCPIM);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //MapActivity를 생성하고 bundle로 값 저장
         MapActivity mapActivity = new MapActivity();
         Bundle bundle = new Bundle();
         bundle.putInt("CITY_KEY", iTemp);
-//                bundle.putString("city",strSATemp);
-//                bundle.putString("message","start");
-        bundle.putInt("MESSAGE_KEY",1);
+        bundle.putInt("MESSAGE_KEY", 1);
+        //bundle값 전달하며 맵 호출
         mapActivity.setArguments(bundle);
-    getFragmentManager().beginTransaction().replace(R.id.lLMapfragment,mapActivity,"map").commit();
+        getFragmentManager().beginTransaction().replace(R.id.lLMapfragment, mapActivity, "map").commit();
 
 
-    FloatingActionButton fabCPIM = (FloatingActionButton) findViewById(R.id.fabCPIM);
+        FloatingActionButton fabCPIM = (FloatingActionButton) findViewById(R.id.fabCPIM);
         fabCPIM.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Snackbar.make(view, "출발지 버튼 텍스트가 지정한 여행지명으로 변경되어야 함", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        }
-    });
-}
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "출발지 버튼 텍스트가 지정한 여행지명으로 변경되어야 함", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+    }
 
 }

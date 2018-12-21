@@ -7,165 +7,147 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
-public class MapActivity extends Fragment implements OnMapReadyCallback {
-    Button btnMapOk;
-    Button btnMapCancel;
-    View rootView;
+public class MapActivity extends Fragment implements TaskLoadedCallback {
+    Button btnGetDirection;
+    MarkerOptions place1 , place2;
+    private MapView mapView;
     private GoogleMap mMap;
-    private MapView fmMap;
-    private boolean mapsSupported = true;
-    LatLng startLatLng, destinationLatLng;
+    LatLng place1LatLng , place2LatLng;
+    Polyline polyline;
     Bundle bundle;
-//    String strCity, strMessage;
-//    String urlTransit = null;
-//    String urlWaypoints = null;
-//    String urlTravelTime = null;
-
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.activity_map,container,false);
-//        btnMapOk = (Button) btnMapOk.findViewById(R.id.btnMapOk);
-//        btnMapCancel = (Button) btnMapCancel.findViewById(R.id.btnMapCancel);
-        fmMap = (MapView) rootView.findViewById(R.id.fmMap);
-        fmMap.onCreate(savedInstanceState);
-        fmMap.onResume();
-        fmMap.getMapAsync(this);
-        return rootView;
-    }
+        ///////////////////////////
+        /// 맵이 들어갈 맵뷰 생성
+        ///////////////////////////
+        View rootview = inflater.inflate(R.layout.activity_map,container,false);
+        mapView = rootview.findViewById(R.id.fmMap);
+        mapView.onCreate(savedInstanceState);
+        bundle = getArguments();
+        mapView.onResume();
+        ///////////////////////////
+        int iTemp = bundle.getInt("city");
+        switchValue(iTemp);
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        fmMap.onResume();
-    }
+        place1LatLng = new LatLng(35.718181, 139.722834);
+        place1 = new MarkerOptions().position(place1LatLng).title("location 1");
+        place2 = new MarkerOptions().position(new LatLng(35.718181, 139.700121)).title("location 2");
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        fmMap.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        fmMap.onPause();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        fmMap.onLowMemory();
-    }
-
-    @Override
-    public void onActivityCreated( Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        MapsInitializer.initialize(getActivity().getApplicationContext());
-        if(fmMap != null)
-            fmMap.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-
-
-//        strCity = bundle.getString("city");
-//        strMessage = bundle.getString("message");
-        if(mMap == null && mapsSupported) {
-            fmMap = (MapView) getActivity().findViewById(R.id.fmMap);
-            mMap = googleMap;
-            bundle = getArguments();
-            int iTemp = bundle.getInt("city");
-            int iMessage = bundle.getInt("message");
-
-            // 카메라 이동 switch 문 (여행지를 지방으로 나누고 공항이 있는 도시로 카메라를 이동)
-            switch (iTemp) {
-                case 1:
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(43.099615, 141.354887), 10)); // 삿포로
-                    break;
-                case 2:
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(35.718181, 139.722834), 10)); // 도쿄
-                    break;
-                case 3:
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(34.6936, 135.502), 10)); // 오사카
-                    break;
-                case 4:
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(33.569776, 130.356818), 10)); // 후쿠오카
-                    break;
-                default:
-                    break;
+        try{
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        //OnMapReadyCallback 인터페이스를 implement 하지 않고 Listener와 같은 개념으로 호출
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                mMap = googleMap;
+                mMap.addMarker(place1);
+                mMap.addMarker(place2);
+//                CameraPosition cameraPosition = new CameraPosition.Builder().target(place1LatLng).zoom(12).build();
+//                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place1LatLng, 10));
+                new FetchURL(getActivity().getApplicationContext()).execute(getUrl(place1.getPosition(), place2.getPosition(), "transit"), "transit");
             }
+        });
 
-            // 출발지와 도착지 마커 생성 및 위치 저장
-//            if (strMessage == "start") {
-//                mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-//                    @Override
-//                    public void onMapClick(LatLng latLng) {
-//                        mMap.addMarker(new MarkerOptions().position(latLng)).setTitle("start");
-//                        LatLng startLatLng = latLng; // 출발지 위치값 저장
-//                    }
-//                });
-//            }
-//            if (strMessage == "destination") {
-//                mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-//                    @Override
-//                    public void onMapClick(LatLng latLng) {
-//                        mMap.addMarker(new MarkerOptions().position(latLng)).setTitle("destination");
-//                        LatLng destinationLatLng = latLng; // 도착지 위치값 저장
-//                    }
-//                });
-//            }
+
+        return rootview;
+    }
+
+    public void switchValue(int iTemp){
+        switch (iTemp) {
+            case 1:
+                LatLng place = place1LatLng;
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(place)); // 삿포로
+                changeCameara(CameraUpdateFactory.zoomTo(10));
+                break;
+            case 2:
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(35.718181, 139.722834), 10)); // 도쿄
+                break;
+            case 3:
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(34.6936, 135.502), 10)); // 오사카
+                break;
+            case 4:
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(33.569776, 130.356818), 10)); // 후쿠오카
+                break;
+            default:
+                break;
         }
     }
 
-//// 확인을 누를시 출발지 목적지 위칫값 전송
-//        btnMapOk.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View view) {
-//            //
-//        }
-//    });
+//    public void onMapReady(GoogleMap googleMap) {
 //
-//        btnMapCancel.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View view) {
-//            //
-//        }
-//    });
+//        mMap = googleMap;
+//        mMap.setMinZoomPreference(6.0f);
+//        mMap.setMaxZoomPreference(14.0f);
+//        mMap.addMarker(place1);
+//        mMap.addMarker(place2);
+//        int iTemp = bundle.getInt("city");
+//        int iMessage = bundle.getInt("message");
 
-//    private void getTrainsitTravleData(String origin, String destination, String mode, String arrival_time) {
-//
-//        Intent intent = new Intent();
-//        origin = intent.getStringExtra("origin");
-//        destination = intent.getStringExtra("destination");
-//        mode = intent.getStringExtra("mode");
-//        arrival_time = intent.getStringExtra("arrival_time");
-//
-////        travelInfo = "origin="+origin+"&destination=" + destination+"&mode=" + mode+"&arrival_time" + arrival_time;
-////        travelInfo.replaceAll(" ","+"); // url엔 띄어쓰기가 없으므로 띄어쓰기를 +로 바꾸자
+
+            // 카메라 이동 switch 문 (여행지를 지방으로 나누고 공항이 있는 도시로 카메라를 이동)
+
+//        }
 //    }
 
-//    private void getWaypointsData(String origin, String destination, String waypoints, String mode) {
-//        Intent intent = new Intent();
-//        origin = intent.getStringExtra("origin");
-//        destination = intent.getStringExtra("destination");
-//        mode = intent.getStringExtra("mode");
-//        waypoints = intent.getStringExtra("waypoints");
-//
-//        travelInfo = "origin="+origin+"&destination=" + destination+"&mode=" + mode+"&waypoints=" + waypoints;
-//        travelInfo.replaceAll(" ","+"); // url엔 띄어쓰기가 없으므로 띄어쓰기를 +로 바꾸자
-//    }
+    private void changeCameara(CameraUpdate update)
+    {
+        mMap.animateCamera(update,null);
+
+    }
+
+    // 지도가 준비되있지 않으면 CamearaUpdateFactory를 사용할수 없으므로 토스트 띄우는 메소드
+    private boolean checkReady() {
+        if (mMap == null) {
+            Toast.makeText(getActivity(),"맵 생성 실패",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        Toast.makeText(getActivity(),"맵 생성",Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
+        // Origin of route (place1)
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+        // Destination of route (place2)
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        // Mode
+        String mode = "mode=" + directionMode;
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + mode;
+        // Output format
+        String output = "json";
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getString(R.string.key);
+        return url;
+    }
+
+
+    @Override
+    public void onTaskDone(Object... values) {
+        if (polyline != null)
+            polyline.remove();
+        polyline = mMap.addPolyline((PolylineOptions) values[0]);
+    }
 }
 

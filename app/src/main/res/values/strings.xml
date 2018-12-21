@@ -44,4 +44,5 @@
     <string name="insert">일정 추가</string>
     <string name="if_you_selected_point">출발지와 도착지 설정 후 확인 버튼을 누르세요.</string>
     <string name="title_activity_choose_point_in_map">ChoosePointInMapActivity</string>
+    <string name="key">AIzaSyBWD3Hz0tsX5Kh3LHX3ibMy9Q6hPp4e8UI</string>
 </resources>
